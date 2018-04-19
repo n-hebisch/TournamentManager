@@ -1,0 +1,41 @@
+{% extends 'layout.twig' %}
+{#Block override the default one#}
+{% block body %}
+    {{ parent() }}
+    <ul id="teamList"></ul>
+
+    Name:<input id="input">
+    <button onclick="createTeam(document.getElementById('input').value)">Create Team</button><br>
+
+    <br>
+{% endblock body %}
+
+{% block list %}
+    {{ parent() }}
+    <ul>
+        {% for team in teams %}
+            <li id="{{ team.id }}">
+                ID:{{ team.id }},
+                <input value='{{ team.name }}' onkeypress="return event.charCode !== 44" disabled="true">
+                <button name="Edit" onclick=" this.parentNode.getElementsByTagName('input')[0].disabled = false;
+            changeButtonLevelTo(2, this)">Edit
+                </button>
+                <button name="Delete" onclick="deleteTeamById(parseInt(this.parentNode.id))">X</button>
+                <button name="Save" onclick="editTeamname(this.parentNode.getElementsByTagName('input')[0].value, parseInt(this.parentNode.id));
+
+            this.parentNode.getElementsByTagName('input')[0].disabled = true;
+            changeButtonLevelTo(1, this)" style="display: none">Save
+                </button>
+
+            </li>
+        {% else %}
+            <li><em>no team found</em></li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+
+
+{% block js %}
+    {{ parent() }}
+    <script src="/javascripts/AJAXteam.js"></script>
+{% endblock body %}

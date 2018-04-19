@@ -1,10 +1,11 @@
 var express = require('express');
 var router = express.Router();
 
-const playerDBManager = require('../playersDBManager.js');
+const DBMPlayer = require('../app/DBManagerPlayer.js');
 
 router.get('/', function (req, res) {
-    var loadPage = playerDBManager.getAllExistingPlayers();
+    var DBManagerPlayer = new DBMPlayer();
+    var loadPage = DBManagerPlayer.getAllExistingPlayers();
     loadPage.then((result) => {
         res.render('player/index', {players: result})
     });
@@ -12,16 +13,17 @@ router.get('/', function (req, res) {
 
 // Get a player
 router.get('/:id', function (req, res) {
+    var DBManagerPlayer = new DBMPlayer();
 
     if (req.params.id !== undefined) {
-        var loadPage = playerDBManager.getPlayerById(req.params.id);
+        var loadPage = DBManagerPlayer.getPlayerById(req.params.id);
         loadPage.then((result) => {
             res.render('player/index', {players: result})
         });
 
     }
     else {
-        var loadPage = playerDBManager.getAllExistingPlayers();
+        var loadPage = DBManagerPlayer.getAllExistingPlayers();
         loadPage.then((result) => {
             res.render('player/index', {players: result})
         });
@@ -30,8 +32,10 @@ router.get('/:id', function (req, res) {
 
 // Create a new player
 router.post('/', function (req, res) {
-    var promiseCreatePlayer = playerDBManager.createPlayer(req.body.name);
-    promiseCreatePlayer.then(() => playerDBManager.getAllExistingPlayers())
+    var DBManagerPlayer = new DBMPlayer();
+
+    var promiseCreatePlayer = DBManagerPlayer.createPlayer(req.body.name);
+    promiseCreatePlayer.then(() => DBManagerPlayer.getAllExistingPlayers())
         .then((result) => {
             res.render('player/index', {players: result})
         })
@@ -40,8 +44,10 @@ router.post('/', function (req, res) {
 
 // Edit a player
 router.put('/', function (req, res) {
-    var promiseEditPlayer = playerDBManager.editPlayernameById(req.body.name, req.body.id);
-    promiseEditPlayer.then(() => playerDBManager.getAllExistingPlayers())
+    var DBManagerPlayer = new DBMPlayer();
+
+    var promiseEditPlayer = DBManagerPlayer.editPlayernameById(req.body.name, req.body.id);
+    promiseEditPlayer.then(() => DBManagerPlayer.getAllExistingPlayers())
         .then((result) => {
             res.render('player/index', {players: result})
         })
@@ -50,8 +56,10 @@ router.put('/', function (req, res) {
 
 // Delete a player
 router.delete('/', function (req, res) {
-    var promiseDeletePlayer = playerDBManager.deletePlayerById(req.body.id);
-    promiseDeletePlayer.then(() => playerDBManager.getAllExistingPlayers())
+    var DBManagerPlayer = new DBMPlayer();
+
+    var promiseDeletePlayer = DBManagerPlayer.deletePlayerById(req.body.id);
+    promiseDeletePlayer.then(() => DBManagerPlayer.getAllExistingPlayers())
         .then((result) => {
             res.render('player/index', {players: result})
         })

@@ -21,6 +21,17 @@ class DBManagerPlayer extends DBM {
         return this.getQuery('SELECT * FROM player WHERE `exists`=1');
     }
 
+    ///
+    addPlayertoTeam(teamid, playerid) {
+        return this.getQuery('INSERT INTO t_team_player(`team_id`,`player_id`) VALUES(?,?)', [teamid, playerid]);
+    }
+
+    getTeambyPlayer() {
+        return this.getQuery('select p.id,p.name,t.id,t.name from player as p\n' +
+            'left join t_team_player ttp on p.id = ttp.player_id\n' +
+            'left join team t on ttp.team_id = t.id\n' +
+            'ORDER BY p.id;\n');
+    }
 }
 
 

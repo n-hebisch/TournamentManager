@@ -30,6 +30,9 @@ class DBManagerTournament extends DBM {
         return this.getQuery('INSERT INTO t_team_tournament(`team_id`,`tournament_id`) VALUES(?,?)', [teamid, tournamentid]);
     }
 
+    deleteTeamFromTournament(teamid, tournamentid){
+        return this.getQuery('DELETE FROM t_team_tournament WHERE `team_id`=? AND `tournament_id`=?',[teamid, tournamentid]);
+    }
     getMatchByTournament() {
         return this.getQuery('select t.id,t.name,m.id,m.winnerteamId from tournament as t\n' +
             'left join t_tournament_match t2 on t.id = t2.tournament_id\n' +
@@ -38,13 +41,24 @@ class DBManagerTournament extends DBM {
             'ORDER BY t.id;')
     }
 
+    //returns every Tournament with Teams
     getTeamByTournament() {
-        return this.getQuery('select t.id,t.name,t3.id,t3.name from tournament as t\n' +
-            'left join t_team_tournament t2 on t.id = t2.tournament_id\n' +
-            'left join team t3 on t2.team_id = t3.id\n' +
-            'WHERE t.`exists`=1 OR t3.`exists`=1\n' +
-            'ORDER BY t.id;')
+        return this.getQuery('select t.id as tournament_id,t.name as tournament_name,t3.id as team_id,t3.name as team_name from tournament as t\n' +
+            '            left join t_team_tournament t2 on t.id = t2.tournament_id\n' +
+            '            left join team t3 on t2.team_id = t3.id\n' +
+            '            WHERE (t.`exists`=1 OR t3.`exists`=1) AND t3.id IS NOT NULL OR t3.name IS NOT NULL\n' +
+            '            ORDER BY t.id;')
     }
+   getTeamsThatAreNotInTournament(id){
+       return this.getQuery('select *\n' +
+           'from team team\n' +
+           '  left join t_team_tournament ttt on team.id = ttt.team_id\n' +
+           'where (ttt.tournament_id <> ? or ttt.tournament_id is null)\n' +
+           '      and team.id not in (select sub.team_id\n' +
+           '                          from t_team_tournament sub\n' +
+           '                          where sub.tournament_id = ?);',[id,id])
+
+   }
 }
 
 

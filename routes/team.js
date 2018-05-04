@@ -9,26 +9,18 @@ router.get('/', function (req, res) {
     loadPage.then((result) => {
         console.log(result);
         res.render('team/index', {teams: result})
-    });
+    }).catch((error) => console.log(error));
 });
 
 // Get a player
 router.get('/:id', function (req, res) {
     var DBManagerTeam = new DBMTeam();
 
-    if (req.params.id !== undefined) {
         var loadPage = DBManagerTeam.getTeamById(req.params.id);
         loadPage.then((result) => {
             res.render('team/index', {teams: result})
-        });
+        }).catch((error) => console.log(error));
 
-    }
-    else {
-        var loadPage = DBManagerTeam.getAllExistingTeams();
-        loadPage.then((result) => {
-            res.render('team/index', {teams: result})
-        });
-    }
 });
 
 // Create a new player

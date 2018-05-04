@@ -37,15 +37,16 @@ function editPlayername(name, ID) {
     xhttp.send('name=' + name + '&id=' + ID)
 }
 
-function getElementByName(array, name) {
-    for (var i = 0; i < array.length; i++) {
-        if (array[i].name === name) {
-            return array[i]
-        }
-    }
-}
 
 function changeButtonLevelTo(level, element) {
+    function getElementByName(array, name) {
+        for (var i = 0; i < array.length; i++) {
+            if (array[i].name === name) {
+                return array[i]
+            }
+        }
+    }
+
     var buttons = element.parentNode.getElementsByTagName('button');
     if (level === 1) {
 

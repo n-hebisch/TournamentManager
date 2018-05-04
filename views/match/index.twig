@@ -1,0 +1,38 @@
+{% extends 'layout.twig' %}
+{#Block override the default one#}
+{% block body %}
+    {{ parent() }}
+    <ul id="matchList"></ul>
+
+    <br>
+{% endblock body %}
+
+{% block list %}
+    {{ parent() }}
+    <ul>
+        {% for match in matches %}
+            <li id="{{ match.id }}">
+                ID:{{ match.id }},
+                <input value='{{ match.name }}' onkeypress="return event.charCode !== 44" disabled="true">
+                <button name="Edit" onclick=" this.parentNode.getElementsByTagName('input')[0].disabled = false;
+            changeButtonLevelTo(2, this)">Edit
+                </button>
+                <button name="Delete" onclick="deletePlayerById(parseInt(this.parentNode.id))">X</button>
+                <button name="Save" onclick="editPlayername(this.parentNode.getElementsByTagName('input')[0].value, parseInt(this.parentNode.id));
+
+            this.parentNode.getElementsByTagName('input')[0].disabled = true;
+            changeButtonLevelTo(1, this)" style="display: none">Save
+                </button>
+
+            </li>
+        {% else %}
+            <li><em>no match found</em></li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+
+
+{% block js %}
+    {{ parent() }}
+    <script src="/javascripts/AJAXplayer.js"></script>
+{% endblock body %}

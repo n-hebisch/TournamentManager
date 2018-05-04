@@ -1,24 +1,24 @@
 const DBM = require('./DBManager.js');
 
 class DBManagerMatch extends DBM {
-    createMatch() {
-        return this.getQuery('INSERT INTO match(`winnerTeamId`) VALUES(null)');
+    createMatch(round) {
+        return this.getQuery('INSERT INTO `match`(`winnerTeamId`,`round`) VALUES(null,?)',[round]);
     }
 
     deleteMatchById(id) {
-        return this.getQuery('UPDATE match SET `exists`=0 WHERE `id`=?', [id]);
+        return this.getQuery('UPDATE `match` SET `exists`=0 WHERE `id`=?', [id]);
     }
 
     setWinnerteam(winnerteamid, matchid) {
-        return this.getQuery('UPDATE match SET winnerteamId =? WHERE id=?', [winnerteamid, matchid]);
+        return this.getQuery('UPDATE `match` SET winnerteamId =? WHERE id=?', [winnerteamid, matchid]);
     }
 
     getMatchById(id) {
-        return this.getQuery('SELECT * FROM match WHERE id= ?', [id]);
+        return this.getQuery('SELECT * FROM `match` WHERE id= ?', [id]);
     }
 
     getAllExistingMatches() {
-        return this.getQuery('SELECT * FROM match WHERE `exists`=1');
+        return this.getQuery('SELECT * FROM `match` WHERE `exists`=1');
     }
 
     ///

@@ -1,0 +1,52 @@
+{% extends 'layout.twig' %}
+{#Block override the default one#}
+
+{% block list %}
+    {{ parent() }}
+    <ul>
+        {% for tournament in tournaments %}
+            <li id="{{ tournament.id }}">
+                ID:{{ tournament.id }},
+                <input value='{{ tournament.name }}' onkeypress="return event.charCode !== 44" disabled="true">
+                <button name="Edit" onclick=" this.parentNode.getElementsByTagName('input')[0].disabled = false;
+                 changeButtonLevelTo(2, this)">Edit
+                </button>
+                <button name="Delete" onclick="deleteTournamentById(parseInt(this.parentNode.id))">X</button>
+                <button name="Save" onclick="editTournamentname(this.parentNode.getElementsByTagName('input')[0].value, parseInt(this.parentNode.id));
+
+            this.parentNode.getElementsByTagName('input')[0].disabled = true;
+            changeButtonLevelTo(1, this)" style="display: none">Save
+                </button>
+
+
+                {#<select name="teams">#}
+                    {#{% for team in teams %}#}
+                        {#<option value="{{ team }}">{{ team.name }}</option>#}
+                    {#{% endfor %}#}
+                {#</select>#}
+
+
+                <br>
+                <ul>
+                    {% for team in tournament.teams %}
+                    {% if tournament.teams!=null %}
+                        <li id="{{ team.id}}">
+                    {{ team.name }}
+                            <button name="Delete" onclick="
+                            deleteTeamFromTournament(parseInt(this.parentNode.id),parseInt(this.parentNode.parentNode.parentNode.id))">X</button>
+                    </li>
+                    {% endif %}
+                    {% endfor %}
+                </ul>
+            </li>
+        {% else %}
+            <li><em>no tournament found</em></li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+
+
+{% block js %}
+    {{ parent() }}
+    <script src="/javascripts/AJAXtournament.js"></script>
+{% endblock body %}

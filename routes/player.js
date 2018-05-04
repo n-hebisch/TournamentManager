@@ -8,26 +8,17 @@ router.get('/', function (req, res) {
     var loadPage = DBManagerPlayer.getAllExistingPlayers();
     loadPage.then((result) => {
         res.render('player/index', {players: result})
-    });
+    }).catch((error) => console.log(error));
 });
 
 // Get a player
 router.get('/:id', function (req, res) {
     var DBManagerPlayer = new DBMPlayer();
-
-    if (req.params.id !== undefined) {
-        var loadPage = DBManagerPlayer.getPlayerById(req.params.id);
+    var loadPage = DBManagerPlayer.getPlayerById(req.params.id);
         loadPage.then((result) => {
             res.render('player/index', {players: result})
-        });
+        }).catch((error) => console.log(error));
 
-    }
-    else {
-        var loadPage = DBManagerPlayer.getAllExistingPlayers();
-        loadPage.then((result) => {
-            res.render('player/index', {players: result})
-        });
-    }
 });
 
 // Create a new player

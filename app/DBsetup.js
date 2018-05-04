@@ -1,5 +1,5 @@
 const DBM = require('./DBManager.js');
-require('dotenv').config();
+require('dotenv').config({path: './.env'});
 
 class DBsetup extends DBM {
     setupDB() {
@@ -21,6 +21,7 @@ class DBsetup extends DBM {
                 return this.getQuery('CREATE TABLE `match`(\n' +
                     '    id int NOT NULL AUTO_INCREMENT,\n' +
                     'winnerteamId int,\n' +
+                    'round int,\n' +
                     '    `exists` integer(1) DEFAULT 1,\n' +
                     '    PRIMARY KEY(id)\n' +
                     ')\n')

@@ -26,10 +26,11 @@ function deletePlayerById(ID) {
 
 //ändert den Namen des Spielers
 function editPlayername(name, ID) {
+    console.log('EDIT ID');
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
-            document.getElementsByTagName('html')[0].innerHTML = this.responseText;
+            // document.getElementsByTagName('html')[0].innerHTML = this.responseText;
         }
     };
     xhttp.open('PUT', '/player', true);

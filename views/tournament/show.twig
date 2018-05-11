@@ -1,0 +1,52 @@
+{% extends 'layout.twig' %}
+{#Block override the default one#}
+
+{% block list %}
+    {{ parent() }}
+
+    <div id="{{tournament[0].id}}">
+        <input value='{{ tournament[0].name }}' onkeypress="return event.charCode !== 44" disabled="true">
+        <button name="Edit" onclick=" this.parentNode.getElementsByTagName('input')[0].disabled = false;
+                 changeButtonLevelTo(2, this)">Edit
+        </button>
+        <button name="Delete" onclick="deleteTournamentById(parseInt(this.parentNode.id))">X</button>
+        <button name="Save" onclick="editTournamentname(this.parentNode.getElementsByTagName('input')[0].value, parseInt(this.parentNode.id));
+                  this.parentNode.getElementsByTagName('input')[0].disabled = true;
+                  changeButtonLevelTo(1, this)" style="display: none">Save
+        </button>
+    </div>
+
+    <br>
+    Info:<br><br>
+    ID:{{ tournament[0].id }}<br>
+    Teamanzahl: {{ teams[0].length }}<br>
+    Add new Team:
+    <select name="teams[1]">
+        {% for team in teams[1] %}
+            <option value="{{ team.id }}">{{ team.name }}</option>
+        {% endfor %}
+    </select>
+
+
+    <br><br>
+    {% if teams[0] %}
+        Teams:
+        <ul>
+            {{ teams[0].name }}
+            {% for team in teams[0] %}
+                <li id="{{ team.id }}">
+                    {{ team.name }}
+                    <button name="Delete" onclick="
+                            deleteTeamFromTournament(parseInt(this.parentNode.id),parseInt(this.parentNode.parentNode.parentNode.id))">X</button>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+{% endblock %}
+
+
+{% block js %}
+    {{ parent() }}
+    <script src="/javascripts/AJAXtournament.js"></script>
+{% endblock body %}

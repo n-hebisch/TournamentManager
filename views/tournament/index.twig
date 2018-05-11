@@ -2,8 +2,6 @@
 {#Block override the default one#}
 {% block body %}
     {{ parent() }}
-    <ul id="tournamentList"></ul>
-
     Name:<input id="input">
     <button onclick="createTournament(document.getElementById('input').value)">Create Tournament</button><br>
 
@@ -17,8 +15,7 @@
             <li id="{{ tournament.id }}">
                 ID:{{ tournament.id }},
                 <input value='{{ tournament.name }}' onkeypress="return event.charCode !== 44" disabled="true">
-                <button name="Edit" onclick="loadTournamentEditPage()">Edit</button>
-                <a href="http://localhost:3000/tournament/{{ tournament.id }}">Edit</a>
+                <button name="Edit" onclick="window.location = 'http://localhost:3000/tournament/{{ tournament.id }}';">Show</button>
                 <br>
             </li>
         {% else %}
@@ -26,7 +23,6 @@
         {% endfor %}
     </ul>
 {% endblock %}
-
 
 {% block js %}
     {{ parent() }}
